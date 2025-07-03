@@ -48,7 +48,6 @@ const gameBoard = ( function () {
     return;
   }
 
-
   return { getBoard, getBoardSquare, setBoardSquare,
        updateBoard, printBoard, clearBoard, boardIsFull, squareAvailable };
 } )(); // IIFE function
@@ -82,16 +81,13 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
       console.log(`${getActivePlayer().name}'s turn.`);
     };	
 
-	const playRound = (row, column) => {
+	const playRound = () => {
 		// place a token for the current player
     if(gameBoard.boardIsFull()) {
       console.log("game board is full")
       return;
-    } else {
-      console.log("game board is not full");
-      return
     }
-    gameBoard.setBoardSquare(row, column, getActivePlayer().token);
+    //gameBoard.setBoardSquare(row, column, getActivePlayer().token);
 
 
 	    /*  This is where we would check for a winner and handle that logic,
@@ -112,15 +108,34 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 })(); // IIFE module gameController
 
 
-gameBoard.setBoardSquare(0, 0, 'X');
-gameBoard.setBoardSquare(0, 1, 'O');
-gameBoard.setBoardSquare(0, 2 , 'X');
-gameBoard.setBoardSquare(1, 0, 'O');
-gameBoard.setBoardSquare(1, 2, 'O');
-gameBoard.setBoardSquare(2, 0, 'X');
-gameBoard.setBoardSquare(2, 1, 'O');
-gameBoard.setBoardSquare(2, 2, 'X');
+gameBoard.setBoardSquare(2,1, gameController.getActivePlayer().token);
 
-//gameBoard.squareAvailable(1,1,'X');
+gameController.playRound();
 
-gameController.playRound(0,0);
+gameBoard.setBoardSquare(1,1, gameController.getActivePlayer().token);
+gameController.playRound();
+
+gameBoard.setBoardSquare(1,0, gameController.getActivePlayer().token);
+gameController.playRound();
+
+gameBoard.setBoardSquare(2,0, gameController.getActivePlayer().token);
+gameController.playRound();
+
+gameBoard.setBoardSquare(0,2, gameController.getActivePlayer().token);
+gameController.playRound();
+
+gameBoard.setBoardSquare(0,0, gameController.getActivePlayer().token);
+gameController.playRound();
+
+gameBoard.setBoardSquare(1,2, gameController.getActivePlayer().token);
+gameController.playRound();
+
+gameBoard.setBoardSquare(2,2, gameController.getActivePlayer().token);
+gameController.playRound();
+
+gameBoard.setBoardSquare(0,1, gameController.getActivePlayer().token);
+gameController.playRound();
+
+
+
+
