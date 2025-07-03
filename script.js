@@ -11,8 +11,7 @@ const gameBoard = ( function () {
 	function getBoardSquare() {
 		// code here
 	}
-	function setBoardSquare(row, column, token) {
-    alert('setBoardSquare called');
+	function setBoardSquare(row, column, token) {    
     if(board[row][column] === 'X' || board[row][column] === 'O') {
       //console.log('board square is already taken');
       alert('board square is already taken');
@@ -41,8 +40,12 @@ const gameBoard = ( function () {
      return !(board.flat(1).includes(''));  
   }
   
-  function squareAvailable(row, column) {
-    return board[row][column] === '';
+  function squareAvailable(row, column, token) {
+    if(board[row][column] === 'X' || board[row][column] === 'O') {
+      return;
+    }
+    setBoardSquare(row, column, token);
+    return;
   }
 
 
@@ -118,5 +121,6 @@ gameBoard.setBoardSquare(2, 0, 'X');
 gameBoard.setBoardSquare(2, 1, 'O');
 gameBoard.setBoardSquare(2, 2, 'X');
 
+//gameBoard.squareAvailable(1,1,'X');
 
 gameController.playRound(0,0);
