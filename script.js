@@ -4,6 +4,11 @@ const gameBoard = ( function () {
     const rows = 3;
     const columns = 3;
     const board = Array.from({ length: rows }, () => Array(columns).fill(''));
+    let winningRow;
+    let winningColumn;
+    let winningDiagonal;
+    let winningCombination;
+    let winner; // player-1 or player-2
     
   function getBoard() {
       return board;
@@ -54,8 +59,29 @@ const gameBoard = ( function () {
     return;
   }
 
+  function winningRow() {
+    // code here
+    let winner = false;
+      for(let row = 0; row < rows; row++) {
+          
+      //
+      }
+  }
+
+  function winningColumn() {
+    // code here
+  }
+
+  function winningDiagonal() {
+    // code here
+  }
+
+  function getWinningCombination() {
+
+  }
+
   return { getBoard, getBoardSquare, setBoardSquare,
-       updateBoard, printBoard, clearBoard, boardIsFull, squareAvailable };
+       updateBoard, printBoard, clearBoard, boardIsFull, squareAvailable, getWinningCombination };
 } )(); // IIFE function
 
 
@@ -87,14 +113,14 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
       console.log(`${getActivePlayer().name}'s turn.`);
     };	
 
-	const playRound = () => {
+	const playRound = (rowColArr) => {
 		// place a token for the current player
     if(gameBoard.boardIsFull()) {
       console.log("game board is full")
       return;
     }
-    //gameBoard.setBoardSquare(row, column, getActivePlayer().token);
-
+    //gameBoard setBoardSquare
+    gameBoard.setBoardSquare(parseInt(rowColArr[0]), parseInt(rowColArr[1]), gameController.getActivePlayer().token);
 
 	    /*  This is where we would check for a winner and handle that logic,
             such as a win message. */
@@ -117,9 +143,8 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 // User plays round from console.
 function playRowColumn(rowColArr){
   //debugger;
-  console.log(rowColArr);
-  gameBoard.setBoardSquare(parseInt(rowColArr[0]), parseInt(rowColArr[1]), gameController.getActivePlayer().token);
-  gameController.playRound();
+  console.log(rowColArr);  
+  gameController.playRound(rowColArr);
 }
 
 // get row and column where user wants to add a token ('X' or 'O')
