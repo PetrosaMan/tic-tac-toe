@@ -126,12 +126,7 @@ function playRowColumn(rowColArr){
 const input = document.getElementById('input');
 input.addEventListener('keydown', function(event){
   if(event.key === 'Enter'){
-    const rowCol = input.value;
+    const rowCol = input.value;       
     playRowColumn(rowCol);    
   }
 }); 
-
-
-
-
-
