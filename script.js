@@ -36,8 +36,14 @@ const gameBoard = ( function () {
         });
     });        
   }
-  function boardIsFull() {    
-     return !(board.flat(1).includes(''));  
+  function boardIsFull() { 
+    if(!(board.flat(1).includes(''))) {
+      printBoard();
+      alert("board is full");
+      return true;
+    } else {
+      return false; 
+    }      
   }
   
   function squareAvailable(row, column, token) {
@@ -108,33 +114,23 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 })(); // IIFE module gameController
 
 
-gameBoard.setBoardSquare(2,1, gameController.getActivePlayer().token);
+// User plays round from console.
+function playRowColumn(rowColArr){
+  //debugger;
+  console.log(rowColArr);
+  gameBoard.setBoardSquare(parseInt(rowColArr[0]), parseInt(rowColArr[1]), gameController.getActivePlayer().token);
+  gameController.playRound();
+}
 
-gameController.playRound();
+// get row and column where user wants to add a token ('X' or 'O')
+const input = document.getElementById('input');
+input.addEventListener('keydown', function(event){
+  if(event.key === 'Enter'){
+    const rowCol = input.value;
+    playRowColumn(rowCol);    
+  }
+}); 
 
-gameBoard.setBoardSquare(1,1, gameController.getActivePlayer().token);
-gameController.playRound();
-
-gameBoard.setBoardSquare(1,0, gameController.getActivePlayer().token);
-gameController.playRound();
-
-gameBoard.setBoardSquare(2,0, gameController.getActivePlayer().token);
-gameController.playRound();
-
-gameBoard.setBoardSquare(0,2, gameController.getActivePlayer().token);
-gameController.playRound();
-
-gameBoard.setBoardSquare(0,0, gameController.getActivePlayer().token);
-gameController.playRound();
-
-gameBoard.setBoardSquare(1,2, gameController.getActivePlayer().token);
-gameController.playRound();
-
-gameBoard.setBoardSquare(2,2, gameController.getActivePlayer().token);
-gameController.playRound();
-
-gameBoard.setBoardSquare(0,1, gameController.getActivePlayer().token);
-gameController.playRound();
 
 
 
