@@ -59,21 +59,42 @@ const gameBoard = ( function () {
     return;
   }
 
-  function winningRow() {
+  function getWinningRow() {
     // code here
+    let winner = false;         
+     
+  }
+
+  function getWinningColumn() {
+    // code here
+  }
+
+  function getWinningDiagonal() {
+    // code here
+    let size = rows;
+    let diag = size;
     let winner = false;
-      for(let row = 0; row < rows; row++) {
-          
-      //
-      }
-  }
+    const leftDiagonal = [];
+    const rightDiagonal = [];
 
-  function winningColumn() {
-    // code here
-  }
+    for(let row = 0; row < size; row++) {
+      rightDiagonal.push(board[row][--diag])
+    }
+    winner = (rightDiagonal.every(element => element.includes('X')))||
+             ( rightDiagonal.every(element => element.includes('O'))); 
+    
+    if(winner) {
+      return winner;
+    };         
+    
+    for(let row = 0; row < size; row++) {  	  
+	    leftDiagonal.push(arr[row][row]);
+    }
+        
+    winner = (leftDiagonal.every(element => element.includes('X')))||
+             ( leftDiagonal.every(element => element.includes('O')));
 
-  function winningDiagonal() {
-    // code here
+    return   winner;
   }
 
   function getWinningCombination() {
@@ -145,6 +166,7 @@ function playRowColumn(rowColArr){
   //debugger;
   console.log(rowColArr);  
   gameController.playRound(rowColArr);
+  document.getElementById('input').value = '';
 }
 
 // get row and column where user wants to add a token ('X' or 'O')
@@ -153,5 +175,5 @@ input.addEventListener('keydown', function(event){
   if(event.key === 'Enter'){
     const rowCol = input.value;       
     playRowColumn(rowCol);    
-  }
+  }  
 }); 
