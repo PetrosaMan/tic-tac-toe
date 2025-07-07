@@ -8,7 +8,7 @@ const gameBoard = ( function () {
     let winningColumn;
     let winningDiagonal;
     let winningCombination;
-    let winner; // player-1 or player-2
+    
     
   function getBoard() {
       return board;
@@ -77,6 +77,8 @@ const gameBoard = ( function () {
     const leftDiagonal = [];
     const rightDiagonal = [];
 
+    console.log("getWinningDiagonal function called");
+
     for(let row = 0; row < size; row++) {
       rightDiagonal.push(board[row][--diag])
     }
@@ -88,7 +90,7 @@ const gameBoard = ( function () {
     };         
     
     for(let row = 0; row < size; row++) {  	  
-	    leftDiagonal.push(arr[row][row]);
+	    leftDiagonal.push(board[row][row]);
     }
         
     winner = (leftDiagonal.every(element => element.includes('X')))||
@@ -98,11 +100,12 @@ const gameBoard = ( function () {
   }
 
   function getWinningCombination() {
-
+    // add code here
   }
 
   return { getBoard, getBoardSquare, setBoardSquare,
-       updateBoard, printBoard, clearBoard, boardIsFull, squareAvailable, getWinningCombination };
+       updateBoard, printBoard, clearBoard, boardIsFull, squareAvailable, getWinningCombination, getWinningDiagonal };
+
 } )(); // IIFE function
 
 
@@ -116,6 +119,8 @@ function createPlayer (name, token) {
 } // create player
 
 const gameController = ( function (player1 = "David", player2 = "Michael") {
+  let winner;
+
   // players array
   const players = [];
   players.push(createPlayer(player1, 'X'));
@@ -145,12 +150,21 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 
 	    /*  This is where we would check for a winner and handle that logic,
             such as a win message. */
+    
+    winner = gameBoard.getWinningDiagonal();
+    //console.log("winner: ", winner);
+    if(winner) {
+        console.log("winner is: ", gameController.getActivePlayer().name);
+        console.log("game over");
+        console.log(gameBoard.getBoard());        
+        return;
+    }            
 
 	   // Switch player turn
       switchPlayerTurn();
       printNewRound();
-    };
-
+    
+  }
 	// Initial play game message    
     printNewRound();
 
