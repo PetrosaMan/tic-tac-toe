@@ -4,20 +4,14 @@ const gameBoard = ( function () {
     const rows = 3;
     const columns = 3;
     const board = Array.from({ length: rows }, () => Array(columns).fill(''));
-    //let winningRow;
-    //let winningColumn;
-    //let winningDiagonal;
-    //let winningCombination;
-    
-    
+        
   function getBoard() {
       return board;
   }
 	
 	function setBoardSquare(row, column, token) {    
     if(board[row][column] === 'X' || board[row][column] === 'O') {
-      //console.log('board square is already taken');
-      alert('board square is already taken');
+      console.log('board square is already taken');     
     } else {
       board[row][column] = token; 
     }      	
@@ -42,7 +36,7 @@ const gameBoard = ( function () {
   function boardIsFull() { 
     if(!(board.flat(1).includes(''))) {
       printBoard();
-      alert("board is full");
+      console.log("board is full");      
       return true;
     } else {
       return false; 
@@ -163,16 +157,13 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
     };	
 
 	const playRound = (rowColArr) => {
-		// place a token for the current player
-    if(gameBoard.boardIsFull()) {
-      console.log("game board is full")
-      return;
-    }
+		// place a token for the current player    
     //gameBoard setBoardSquare
     gameBoard.setBoardSquare(parseInt(rowColArr[0]), parseInt(rowColArr[1]), gameController.getActivePlayer().token);
 
 	    /* Check for a winner and handle that logic,
             such as a win message. */
+            
     const diagonalWinner = gameBoard.getWinningDiagonal();     
     const rowWinner = gameBoard.getWinningRow();
     const columnWinner = gameBoard.getWinningColumn();
@@ -183,6 +174,9 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
         console.log("game over");
         console.log(gameBoard.getBoard());        
         return;
+    } else if(gameBoard.boardIsFull()) {      
+      console.log("game drawn");
+      return;
     }            
 
 	   // Switch player turn
