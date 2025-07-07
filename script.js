@@ -4,18 +4,16 @@ const gameBoard = ( function () {
     const rows = 3;
     const columns = 3;
     const board = Array.from({ length: rows }, () => Array(columns).fill(''));
-    let winningRow;
-    let winningColumn;
-    let winningDiagonal;
-    let winningCombination;
+    //let winningRow;
+    //let winningColumn;
+    //let winningDiagonal;
+    //let winningCombination;
     
     
   function getBoard() {
       return board;
   }
-	function getBoardSquare() {
-		// code here
-	}
+	
 	function setBoardSquare(row, column, token) {    
     if(board[row][column] === 'X' || board[row][column] === 'O') {
       //console.log('board square is already taken');
@@ -60,24 +58,57 @@ const gameBoard = ( function () {
   }
 
   function getWinningRow() {
-    // code here
-    let winner = false;         
-     
+    // check for a winning row
+    let winner = false;
+    let winRow =[];
+    const size = rows;
+
+    for(let row = 0; row < size; row++) {
+		for(let col = 0; col < size; col++) {
+			winRow.push(board[row][col]);
+		}
+		//console.log('winRow:',winRow);
+		winner =  (winRow.every(element => element.includes('X'))) ||
+				  (winRow.every(element => element.includes('O')));
+				  
+		if(winner) { 
+			return winner;
+		} 
+		winRow = [];	
+	}
+		return winner;     
   }
 
   function getWinningColumn() {
-    // code here
+    // check for a winning column
+    const size = columns;  
+    let winCol =[];
+	  let  winner = false;
+
+    for(let col = 0; col < size; col++) {
+		for(let row = 0; row < size; row++) {
+			winCol.push(board[row][col]);
+		}
+		//console.log('winCol:',winCol);
+		winner =  (winCol.every(element => element.includes('X'))) ||
+				  (winCol.every(element => element.includes('O')));
+				  
+		if(winner) { 
+			return winner;
+		} 
+		winCol = [];	
+	}
+		return winner;
   }
 
   function getWinningDiagonal() {
-    // code here
+    // check for a winning diagonal
     let size = rows;
     let diag = size;
     let winner = false;
     const leftDiagonal = [];
     const rightDiagonal = [];
-
-    console.log("getWinningDiagonal function called");
+    //console.log("getWinningDiagonal function called");
 
     for(let row = 0; row < size; row++) {
       rightDiagonal.push(board[row][--diag])
@@ -95,16 +126,10 @@ const gameBoard = ( function () {
         
     winner = (leftDiagonal.every(element => element.includes('X')))||
              ( leftDiagonal.every(element => element.includes('O')));
-
     return   winner;
-  }
+  }  
 
-  function getWinningCombination() {
-    // add code here
-  }
-
-  return { getBoard, getBoardSquare, setBoardSquare,
-       updateBoard, printBoard, clearBoard, boardIsFull, squareAvailable, getWinningCombination, getWinningDiagonal };
+  return { getBoard, setBoardSquare, updateBoard, printBoard, clearBoard,boardIsFull, squareAvailable,  getWinningDiagonal, getWinningColumn, getWinningRow };
 
 } )(); // IIFE function
 
@@ -116,11 +141,9 @@ function createPlayer (name, token) {
      token,
      // No methods yet unless needed    
   };  
-} // create player
+} 
 
-const gameController = ( function (player1 = "David", player2 = "Michael") {
-  let winner;
-
+const gameController = ( function (player1 = "David", player2 = "Michael") {  
   // players array
   const players = [];
   players.push(createPlayer(player1, 'X'));
@@ -148,12 +171,14 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
     //gameBoard setBoardSquare
     gameBoard.setBoardSquare(parseInt(rowColArr[0]), parseInt(rowColArr[1]), gameController.getActivePlayer().token);
 
-	    /*  This is where we would check for a winner and handle that logic,
+	    /* Check for a winner and handle that logic,
             such as a win message. */
-    
-    winner = gameBoard.getWinningDiagonal();
-    //console.log("winner: ", winner);
-    if(winner) {
+    const diagonalWinner = gameBoard.getWinningDiagonal();     
+    const rowWinner = gameBoard.getWinningRow();
+    const columnWinner = gameBoard.getWinningColumn();
+
+    // check for game winner
+    if(diagonalWinner || rowWinner || columnWinner) {
         console.log("winner is: ", gameController.getActivePlayer().name);
         console.log("game over");
         console.log(gameBoard.getBoard());        
@@ -176,8 +201,7 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 
 
 // User plays round from console.
-function playRowColumn(rowColArr){
-  //debugger;
+function playRowColumn(rowColArr){  
   console.log(rowColArr);  
   gameController.playRound(rowColArr);
   document.getElementById('input').value = '';
