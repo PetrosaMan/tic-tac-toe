@@ -194,10 +194,12 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 })(); // IIFE module gameController
 
 
-// User plays round from console.
-function playRowColumn(rowColArr){  
-  console.log(rowColArr);  
-  gameController.playRound(rowColArr);
+
+// rowColStr is actually a two digit string input
+// which is separated into idex[0] and index[1]
+function playRowColumn(rowColStr){  
+  console.log(rowColStr);  
+  gameController.playRound(rowColStr);
   document.getElementById('input').value = '';
 }
 
@@ -205,7 +207,10 @@ function playRowColumn(rowColArr){
 const input = document.getElementById('input');
 input.addEventListener('keydown', function(event){
   if(event.key === 'Enter'){
-    const rowCol = input.value;       
-    playRowColumn(rowCol);    
+    const rowColStr = input.value;       
+    playRowColumn(rowColStr);    
   }  
 }); 
+
+
+// TODO: note 
