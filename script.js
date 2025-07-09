@@ -17,7 +17,8 @@ const gameBoard = ( function () {
     }      	
   }	
 	function updateBoard() {
-		const flatBoard = board.flat(1);
+    console.log("update board function called");
+		const flatBoard = board.flat();
     const buttons = document.querySelectorAll('#button-row button');
     
     flatBoard.forEach((char, index) => {
@@ -192,8 +193,9 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 	   // Switch player turn
       switchPlayerTurn();
       printNewRound();
-    
+     gameBoard.updateBoard();// new function code TODO
   }
+ 
 	// Initial play game message    
     printNewRound();
 
