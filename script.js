@@ -17,8 +17,17 @@ const gameBoard = ( function () {
     }      	
   }	
 	function updateBoard() {
-		// code here
-  }
+		const flatBoard = board.flat(1);
+    const buttons = document.querySelectorAll('#button-row button');
+    
+    flatBoard.forEach((char, index) => {
+      if (buttons[index]) {
+      buttons[index].innerText = char;
+      }
+    })  
+  } 
+        
+ 
 
   function printBoard()  {
 			// This method will be used to
@@ -124,6 +133,7 @@ const gameBoard = ( function () {
   }  
 
   return { getBoard, setBoardSquare, updateBoard, printBoard, clearBoard,boardIsFull, squareAvailable,  getWinningDiagonal, getWinningColumn, getWinningRow };
+
 
 } )(); // IIFE function
 
