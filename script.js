@@ -3,15 +3,16 @@
 const gameBoard = ( function () {       
     const rows = 3;
     const columns = 3;
-    const board = Array.from({ length: rows }, () => Array(columns).fill(''));
-        
+    const board = Array.from({ length: rows }, () => Array(columns)
+    .fill(''));    
+    
   function getBoard() {
       return board;
   }
 	
 	function setBoardSquare(row, column, token) {    
     if(board[row][column] === 'X' || board[row][column] === 'O') {
-      console.log('board square is already taken');
+      alert('board square is already taken');
       return false;     
     } else {
       board[row][column] = token;
@@ -19,7 +20,7 @@ const gameBoard = ( function () {
     }      	
   }	
 	function updateBoard() {
-    console.log("update board function called");
+    //console.log("update board function called");
 		const flatBoard = board.flat();
     const buttons = document.querySelectorAll('#button-row button');
     
@@ -46,7 +47,7 @@ const gameBoard = ( function () {
   function boardIsFull() { 
     if(!(board.flat(1).includes(''))) {
       printBoard();
-      console.log("board is full");      
+      alert("board is full");      
       return true;
     } else {
       return false; 
@@ -59,6 +60,14 @@ const gameBoard = ( function () {
     }
     setBoardSquare(row, column, token);
     return;
+  }
+
+  function gameOver() {
+    if(getWinningRow() || getWinningColumn() || getWinningDiagonal()) {
+      return true;
+    } else {
+      return false;  
+    }
   }
 
   function getWinningRow() {
@@ -111,8 +120,7 @@ const gameBoard = ( function () {
     let diag = size;
     let winner = false;
     const leftDiagonal = [];
-    const rightDiagonal = [];
-    //console.log("getWinningDiagonal function called");
+    const rightDiagonal = [];    
 
     for(let row = 0; row < size; row++) {
       rightDiagonal.push(board[row][--diag])
@@ -121,7 +129,7 @@ const gameBoard = ( function () {
              ( rightDiagonal.every(element => element.includes('O'))); 
     
     if(winner) {
-      /*updateBoard*/
+      //updateBoard
       return winner;
     };         
     
@@ -134,8 +142,7 @@ const gameBoard = ( function () {
     return   winner;
   }  
 
-  return { getBoard, setBoardSquare, updateBoard, printBoard, clearBoard,boardIsFull, squareAvailable,  getWinningDiagonal, getWinningColumn, getWinningRow };
-
+  return { getBoard, setBoardSquare, updateBoard, printBoard, clearBoard,boardIsFull, squareAvailable,  getWinningDiagonal, getWinningColumn, getWinningRow, gameOver };
 
 } )(); // IIFE function
 
@@ -149,7 +156,7 @@ function createPlayer (name, token) {
   };  
 } 
 
-const gameController = ( function (player1 = "David", player2 = "Michael") {  
+const gameController = ( function (player1 = "player-1", player2 = "player-2") {  
   // players array
   const players = [];
   players.push(createPlayer(player1, 'X'));
@@ -164,7 +171,7 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 	const getActivePlayer = () => activePlayer;
 
 	const printNewRound = () => {
-      gameBoard.printBoard();
+      //gameBoard.printBoard();
       console.log(`${getActivePlayer().name}'s turn.`);
     };	
 
@@ -174,32 +181,22 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
     const squareSet = gameBoard.setBoardSquare(parseInt(rowColArr[0]), parseInt(rowColArr[1]), gameController.getActivePlayer().token);
     if(!squareSet) {
       return;
-    }
-
-	    /* Check for a winner and handle that logic,
-            such as a win message. */
-            
-    const diagonalWinner = gameBoard.getWinningDiagonal();     
-    const rowWinner = gameBoard.getWinningRow();
-    const columnWinner = gameBoard.getWinningColumn();
+    }   	  
 
     // check for game winner
-    if(diagonalWinner || rowWinner || columnWinner) {
-      gameBoard.updateBoard(); 
-      alert("winner is: " + gameController.getActivePlayer().name); 
-      console.log("winner is: ", gameController.getActivePlayer().name);
-      console.log("game over");
-      console.log(gameBoard.getBoard());                
+    if(gameBoard.gameOver()) {
+      gameBoard.updateBoard();
+      document.getElementById("game-winner").innerText = "Game Over" + " " + "Winner is: " + gameController.getActivePlayer().name;                      
       return;
     } else if(gameBoard.boardIsFull()) {      
-      console.log("game drawn");
+        alert("game drawn");
       return;
     }            
 
 	   // Switch player turn
       switchPlayerTurn();
       printNewRound();
-     gameBoard.updateBoard();// new function code TODO
+     gameBoard.updateBoard();
   }
  
 	// Initial play game message    
@@ -213,22 +210,33 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 
 
 
-// rowColStr is actually a two digit string input
-// which is separated into idex[0] and index[1]
-function playRowColumn(rowColStr){  
-  console.log(rowColStr);   
+function playRowColumn(rowColStr){     
   gameController.playRound(rowColStr);
-  document.getElementById('input').value = '';
+  //document.getElementById('input').value = '';
 }
 
 // get row and column where user wants to add a token ('X' or 'O')
-const input = document.getElementById('input');
+/*const input = document.getElementById('input');
 input.addEventListener('keydown', function(event){
   if(event.key === 'Enter'){
     const rowColStr = input.value;       
     playRowColumn(rowColStr);    
   }  
 }); 
+*/
 
-
-// TODO: note 
+// multibutton to place token on board
+document.addEventListener('DOMContentLoaded', function() {
+  document.
+  getElementById("button-row")
+  .addEventListener("click", function (event) {
+    if(gameBoard.gameOver()) {
+      return;
+    }    
+    if (event.target.matches("button")) {      
+	  const rowColStr = event.target.value;
+	  playRowColumn(rowColStr);			
+    }
+	return;
+  });
+});

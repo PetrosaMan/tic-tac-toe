@@ -22,8 +22,9 @@ h1 {
 .button {    
     width: 100px;
     height: 100px;
+    font-size: 30px;
+    background-color: #CCFFE7;
 }
-
 
 .input {        
     height: 25px;        
@@ -37,4 +38,11 @@ h1 {
 .label {
     padding-left: 10px;
     padding-right: 10px;;
+}
+
+#game-winner {
+    margin-top: 30px;
+    font-size: 25px;
+    padding: 20px;
+    text-align: center;
 }
