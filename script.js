@@ -11,9 +11,11 @@ const gameBoard = ( function () {
 	
 	function setBoardSquare(row, column, token) {    
     if(board[row][column] === 'X' || board[row][column] === 'O') {
-      console.log('board square is already taken');     
+      console.log('board square is already taken');
+      return false;     
     } else {
-      board[row][column] = token; 
+      board[row][column] = token;
+      return true; 
     }      	
   }	
 	function updateBoard() {
@@ -26,9 +28,7 @@ const gameBoard = ( function () {
       buttons[index].innerText = char;
       }
     })  
-  } 
-        
- 
+  }  
 
   function printBoard()  {
 			// This method will be used to
@@ -121,6 +121,7 @@ const gameBoard = ( function () {
              ( rightDiagonal.every(element => element.includes('O'))); 
     
     if(winner) {
+      /*updateBoard*/
       return winner;
     };         
     
@@ -170,7 +171,10 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 	const playRound = (rowColArr) => {
 		// place a token for the current player    
     //gameBoard setBoardSquare
-    gameBoard.setBoardSquare(parseInt(rowColArr[0]), parseInt(rowColArr[1]), gameController.getActivePlayer().token);
+    const squareSet = gameBoard.setBoardSquare(parseInt(rowColArr[0]), parseInt(rowColArr[1]), gameController.getActivePlayer().token);
+    if(!squareSet) {
+      return;
+    }
 
 	    /* Check for a winner and handle that logic,
             such as a win message. */
@@ -181,10 +185,12 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 
     // check for game winner
     if(diagonalWinner || rowWinner || columnWinner) {
-        console.log("winner is: ", gameController.getActivePlayer().name);
-        console.log("game over");
-        console.log(gameBoard.getBoard());        
-        return;
+      gameBoard.updateBoard(); 
+      alert("winner is: " + gameController.getActivePlayer().name); 
+      console.log("winner is: ", gameController.getActivePlayer().name);
+      console.log("game over");
+      console.log(gameBoard.getBoard());                
+      return;
     } else if(gameBoard.boardIsFull()) {      
       console.log("game drawn");
       return;
@@ -210,7 +216,7 @@ const gameController = ( function (player1 = "David", player2 = "Michael") {
 // rowColStr is actually a two digit string input
 // which is separated into idex[0] and index[1]
 function playRowColumn(rowColStr){  
-  console.log(rowColStr);  
+  console.log(rowColStr);   
   gameController.playRound(rowColStr);
   document.getElementById('input').value = '';
 }
