@@ -30,16 +30,24 @@ h1 {
     height: 25px;        
 }
 
-.test-values {
+#players {
     display: flex;
+    flex-wrap: wrap;
+    width: 300px;
     justify-content: center;
-    margin-top: 20px;;
+    align-items: center;
+    margin: auto;
+    margin-top: 50px;
 }   
-.label {
-    padding-left: 10px;
-    padding-right: 10px;;
+
+.player {
+    width: 300px;
+    padding: 10px;
 }
 
+label {
+    padding-right: 10px;
+}
 #game-winner {
     margin-top: 30px;
     font-size: 25px;

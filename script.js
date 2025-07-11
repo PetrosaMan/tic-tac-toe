@@ -12,7 +12,7 @@ const gameBoard = ( function () {
 	
 	function setBoardSquare(row, column, token) {    
     if(board[row][column] === 'X' || board[row][column] === 'O') {
-      alert('board square is already taken');
+      console.log('board square is already taken');
       return false;     
     } else {
       board[row][column] = token;
@@ -47,7 +47,7 @@ const gameBoard = ( function () {
   function boardIsFull() { 
     if(!(board.flat(1).includes(''))) {
       printBoard();
-      alert("board is full");      
+      console.log("board is full");      
       return true;
     } else {
       return false; 
@@ -144,8 +144,9 @@ const gameBoard = ( function () {
 
   return { getBoard, setBoardSquare, updateBoard, printBoard, clearBoard,boardIsFull, squareAvailable,  getWinningDiagonal, getWinningColumn, getWinningRow, gameOver };
 
-} )(); // IIFE function
+} )(); // IIFE function 
 
+/***********************************/
 
 function createPlayer (name, token) { 
 	// factory function
@@ -154,9 +155,9 @@ function createPlayer (name, token) {
      token,
      // No methods yet unless needed    
   };  
-} 
+}
 
-const gameController = ( function (player1 = "player-1", player2 = "player-2") {  
+const gameController = ( function(player1 = 'player-1',player2 = 'player-2') {  
   // players array
   const players = [];
   players.push(createPlayer(player1, 'X'));
@@ -172,7 +173,7 @@ const gameController = ( function (player1 = "player-1", player2 = "player-2") {
 
 	const printNewRound = () => {
       //gameBoard.printBoard();
-      console.log(`${getActivePlayer().name}'s turn.`);
+      //console.log(`${getActivePlayer().name}'s turn.`);
     };	
 
 	const playRound = (rowColArr) => {
@@ -189,7 +190,9 @@ const gameController = ( function (player1 = "player-1", player2 = "player-2") {
       document.getElementById("game-winner").innerText = "Game Over" + " " + "Winner is: " + gameController.getActivePlayer().name;                      
       return;
     } else if(gameBoard.boardIsFull()) {      
-        alert("game drawn");
+        console.log("game drawn");
+        gameBoard.updateBoard();
+        document.getElementById("game-winner").innerText = "It's a draw"; 
       return;
     }            
 
@@ -204,26 +207,16 @@ const gameController = ( function (player1 = "player-1", player2 = "player-2") {
 
     // For the console version, we will only use playRound, but we will need
     // getActivePlayer for the UI version, so I'm revealing it now
-    return { playRound, getActivePlayer }
+    return { playRound, getActivePlayer, players }
 
 })(); // IIFE module gameController
 
+/******************************/
 
 
 function playRowColumn(rowColStr){     
-  gameController.playRound(rowColStr);
-  //document.getElementById('input').value = '';
+  gameController.playRound(rowColStr);  
 }
-
-// get row and column where user wants to add a token ('X' or 'O')
-/*const input = document.getElementById('input');
-input.addEventListener('keydown', function(event){
-  if(event.key === 'Enter'){
-    const rowColStr = input.value;       
-    playRowColumn(rowColStr);    
-  }  
-}); 
-*/
 
 // multibutton to place token on board
 document.addEventListener('DOMContentLoaded', function() {
@@ -240,3 +233,27 @@ document.addEventListener('DOMContentLoaded', function() {
 	return;
   });
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+
+// get player names
+const input1 = document.getElementById('player-1');
+const input2 = document.getElementById('player-2');
+
+// Trigger the function when Enter is pressed on either input
+[input1, input2].forEach(input => {
+  input.addEventListener('keydown', function(event) {
+    if (event.key === 'Enter') {
+      const name1 = input1.value.trim();
+      const name2 = input2.value.trim();     
+      gameController.players[0].name = name1;
+      gameController.players[1].name = name2;
+    }
+  });
+});
+
+});
+
+
+
