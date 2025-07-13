@@ -26,9 +26,6 @@ h1 {
     background-color: #CCFFE7;
 }
 
-.input {        
-    height: 25px;        
-}
 
 #players {
     display: flex;
@@ -53,4 +50,20 @@ label {
     font-size: 25px;
     padding: 20px;
     text-align: center;
+}
+
+.restart-game {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#form-container {
+    display: flex; 
+    flex-wrap: wrap;    
+    justify-content: center; 
+    align-items: center;
+    width: 300px;
+    height:100px;
+    margin: auto;
+    
 }

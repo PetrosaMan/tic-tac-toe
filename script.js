@@ -37,13 +37,19 @@ const gameBoard = ( function () {
 	  	console.table(board);       
   }
 
-  function clearBoard () {           
+  function clearBoard () { 
+    console.log('Clear board called');
+    //debugger;          
     board.forEach((row, rowIndex) => {
       row.forEach((column, columnIndex) => { 
         board[rowIndex][columnIndex] = '';        
         });
-    });        
+    }); 
+    updateBoard();    
+    gameController.setActivePlayer(gameController.players);
+    console.log("Players: ", gameController.players);       
   }
+
   function boardIsFull() { 
     if(!(board.flat(1).includes(''))) {
       printBoard();
@@ -165,6 +171,10 @@ const gameController = ( function(player1 = 'player-1',player2 = 'player-2') {
 	
 	let activePlayer = players[0];
 
+  const setActivePlayer = (players) => {
+    return activePlayer = players[0];
+  }
+
 	const switchPlayerTurn = () => {
       activePlayer = activePlayer === players[0] ? players[1] : players[0];
     }
@@ -172,13 +182,13 @@ const gameController = ( function(player1 = 'player-1',player2 = 'player-2') {
 	const getActivePlayer = () => activePlayer;
 
 	const printNewRound = () => {
-      //gameBoard.printBoard();
-      //console.log(`${getActivePlayer().name}'s turn.`);
+      gameBoard.printBoard();
+      console.log(`${getActivePlayer().name}'s turn.`);
     };	
 
 	const playRound = (rowColArr) => {
 		// place a token for the current player    
-    //gameBoard setBoardSquare
+    //gameBoard setBoardSquare    
     const squareSet = gameBoard.setBoardSquare(parseInt(rowColArr[0]), parseInt(rowColArr[1]), gameController.getActivePlayer().token);
     if(!squareSet) {
       return;
@@ -207,7 +217,7 @@ const gameController = ( function(player1 = 'player-1',player2 = 'player-2') {
 
     // For the console version, we will only use playRound, but we will need
     // getActivePlayer for the UI version, so I'm revealing it now
-    return { playRound, getActivePlayer, players }
+    return { playRound, getActivePlayer, players, setActivePlayer }
 
 })(); // IIFE module gameController
 
@@ -234,26 +244,24 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 
+  // get player names
+  const input1 = document.getElementById('player-1');
+  const input2 = document.getElementById('player-2');
 
-document.addEventListener('DOMContentLoaded', function() {
-
-// get player names
-const input1 = document.getElementById('player-1');
-const input2 = document.getElementById('player-2');
-
-// Trigger the function when Enter is pressed on either input
-[input1, input2].forEach(input => {
-  input.addEventListener('keydown', function(event) {
-    if (event.key === 'Enter') {
+  
+    const btn = document.addEventListener('submit', function(event){
+      event.preventDefault();
       const name1 = input1.value.trim();
-      const name2 = input2.value.trim();     
+      const name2 = input2.value.trim();
+      //debugger
       gameController.players[0].name = name1;
       gameController.players[1].name = name2;
-    }
-  });
-});
+      console.log("btn event");
+      console.log(gameController.players);
+      gameBoard.clearBoard();
+     document.getElementById("game-winner").innerText = "";
+    });  
+      
 
-});
 
-
-
+ 

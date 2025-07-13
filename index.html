@@ -23,11 +23,34 @@
     </div>
     
     <div id="game-winner">winner</div>
-    
 
-    <input type="text" id="player-1" placeholder="Player-1 Name">
-    <input type="text" id="player-2" placeholder="Player-2 Name">
+    <form action="">
+        <div id="form-container">
+        <div>
+            <label for="player-1">Player name:</label>        
+            <input type="text" id="player-1" name="player-1" value=""> 
+        </div>
+
+        <div>       
+            <label for="player-2">Player name:</label>        
+            <input type="text" id="player-2" name="player-2"
+            value="">
+        </div>
+
+        <div>        
+            <input type="submit" value="Restart game">
+        </div>
+        </div>
+    </form>
     
-    
+    <!--<div id="players">        
+        <input type="text" id="player-1" placeholder="Player-1 Name">
+        <input type="text" id="player-2" placeholder="Player-2 Name">
+    </div>
+
+    <div class="restart-game">
+        <button id="restart-game">Restart Game</button>
+    </div>    
+    -->
 </body>
 </html>
