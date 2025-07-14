@@ -253,6 +253,8 @@ function playRowColumn(rowColStr){
     if (player1.value === "" || player2.value === "") {
         alert("Enter both player names to start the game!");
         return;
+    } else if (player1.value.toUpperCase() === player2.value.toUpperCase()) { 
+        alert("Players names cannot not be the same!")
     } else {
         gameInitialized = true;
     }   
