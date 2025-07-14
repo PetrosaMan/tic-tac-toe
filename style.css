@@ -52,18 +52,24 @@ label {
     text-align: center;
 }
 
-.restart-game {
+.btn-1 {
     text-align: center;
-    margin-top: 20px;
+    margin-top: 10px;
+    width: 150px;
 }
 
-#form-container {
+.container {
     display: flex; 
     flex-wrap: wrap;    
     justify-content: center; 
     align-items: center;
-    width: 300px;
-    height:100px;
-    margin: auto;
-    
+    width: 120px;
+    height: 100px;
+    margin: auto;    
+}
+
+.footer {
+    text-align: center;
+    margin-top: 10px;
+    font-size: 15px;
 }

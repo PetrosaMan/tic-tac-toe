@@ -32,14 +32,13 @@ const gameBoard = ( function () {
   }  
 
   function printBoard()  {
-			// This method will be used to
+			// This method is used to
       // print board to the console.
 	  	console.table(board);       
   }
 
   function clearBoard () { 
-    console.log('Clear board called');
-    //debugger;          
+    console.log('Clear board called');             
     board.forEach((row, rowIndex) => {
       row.forEach((column, columnIndex) => { 
         board[rowIndex][columnIndex] = '';        
@@ -108,7 +107,7 @@ const gameBoard = ( function () {
 		for(let row = 0; row < size; row++) {
 			winCol.push(board[row][col]);
 		}
-		//console.log('winCol:',winCol);
+		
 		winner =  (winCol.every(element => element.includes('X'))) ||
 				  (winCol.every(element => element.includes('O')));
 				  
@@ -197,7 +196,7 @@ const gameController = ( function(player1 = 'player-1',player2 = 'player-2') {
     // check for game winner
     if(gameBoard.gameOver()) {
       gameBoard.updateBoard();
-      document.getElementById("game-winner").innerText = "Game Over" + " " + "Winner is: " + gameController.getActivePlayer().name;                      
+      document.getElementById("game-winner").innerText = "Game Over," + " " + "Winner is: " + gameController.getActivePlayer().name;                      
       return;
     } else if(gameBoard.boardIsFull()) {      
         console.log("game drawn");
@@ -213,15 +212,13 @@ const gameController = ( function(player1 = 'player-1',player2 = 'player-2') {
   }
  
 	// Initial play game message    
-    printNewRound();
-
-    // For the console version, we will only use playRound, but we will need
-    // getActivePlayer for the UI version, so I'm revealing it now
-    return { playRound, getActivePlayer, players, setActivePlayer }
+    printNewRound();    
+    
+    return {
+              playRound, getActivePlayer, players, setActivePlayer
+           }
 
 })(); // IIFE module gameController
-
-/******************************/
 
 
 function playRowColumn(rowColStr){     
@@ -229,10 +226,13 @@ function playRowColumn(rowColStr){
 }
 
 // multibutton to place token on board
-document.addEventListener('DOMContentLoaded', function() {
   document.
   getElementById("button-row")
   .addEventListener("click", function (event) {
+    if(!gameInitialized) {
+      alert("Please enter both players names to start the game!");
+      return;
+    }
     if(gameBoard.gameOver()) {
       return;
     }    
@@ -242,25 +242,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 	return;
   });
-});
 
   // get player names
-  const input1 = document.getElementById('player-1');
-  const input2 = document.getElementById('player-2');
+  const player1 = document.querySelector('.player-1');
+  const player2 = document.querySelector('.player-2');
+  const btn1 = document.querySelector('.btn-1');
+  let gameInitialized = false;  
 
-  
-    const btn = document.addEventListener('submit', function(event){
-      event.preventDefault();
-      const name1 = input1.value.trim();
-      const name2 = input2.value.trim();
-      //debugger
+  btn1.addEventListener('click', () => {      
+    if (player1.value === "" || player2.value === "") {
+        alert("Enter both player names to start the game!");
+        return;
+    } else {
+        gameInitialized = true;
+    }   
+      const name1 = player1.value.trim();
+      const name2 = player2.value.trim();     
       gameController.players[0].name = name1;
-      gameController.players[1].name = name2;
-      console.log("btn event");
-      console.log(gameController.players);
+      gameController.players[1].name = name2;            
       gameBoard.clearBoard();
-     document.getElementById("game-winner").innerText = "";
-    });  
+      document.getElementById("game-winner").innerText = "";
+     
+  });      
       
 
 
